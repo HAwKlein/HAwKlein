@@ -88,40 +88,42 @@
     }
 
     /* ── Fade-in animation ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: none; }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
     }
 
-    .fade-in {
-      animation: fadeUp 0.55s ease both;
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
     }
 
     /* Stagger hero section children (name, subtitle, bio, quote) */
-    #hero .fade-in:nth-child(2) { animation-delay: 0.08s; }
-    #hero .fade-in:nth-child(3) { animation-delay: 0.16s; }
-    #hero .fade-in:nth-child(4) { animation-delay: 0.24s; }
+    #hero .fade-in:nth-child(2) { transition-delay: 0.08s; }
+    #hero .fade-in:nth-child(3) { transition-delay: 0.16s; }
+    #hero .fade-in:nth-child(4) { transition-delay: 0.24s; }
 
     /* Cards in grids appear sequentially (0.05 s per card) */
     .timeline-grid .fade-in:nth-child(1),
     .project-grid  .fade-in:nth-child(1),
-    .activity-grid .fade-in:nth-child(1) { animation-delay: 0.05s; }
+    .activity-grid .fade-in:nth-child(1) { transition-delay: 0.05s; }
 
     .timeline-grid .fade-in:nth-child(2),
     .project-grid  .fade-in:nth-child(2),
-    .activity-grid .fade-in:nth-child(2) { animation-delay: 0.10s; }
+    .activity-grid .fade-in:nth-child(2) { transition-delay: 0.10s; }
 
     .timeline-grid .fade-in:nth-child(3),
     .project-grid  .fade-in:nth-child(3),
-    .activity-grid .fade-in:nth-child(3) { animation-delay: 0.15s; }
+    .activity-grid .fade-in:nth-child(3) { transition-delay: 0.15s; }
 
     .timeline-grid .fade-in:nth-child(4),
-    .project-grid  .fade-in:nth-child(4) { animation-delay: 0.20s; }
+    .project-grid  .fade-in:nth-child(4) { transition-delay: 0.20s; }
 
-    .timeline-grid .fade-in:nth-child(5) { animation-delay: 0.25s; }
-    .timeline-grid .fade-in:nth-child(6) { animation-delay: 0.30s; }
-    .timeline-grid .fade-in:nth-child(7) { animation-delay: 0.35s; }
-    .timeline-grid .fade-in:nth-child(8) { animation-delay: 0.40s; }
+    .timeline-grid .fade-in:nth-child(5) { transition-delay: 0.25s; }
+    .timeline-grid .fade-in:nth-child(6) { transition-delay: 0.30s; }
+    .timeline-grid .fade-in:nth-child(7) { transition-delay: 0.35s; }
+    .timeline-grid .fade-in:nth-child(8) { transition-delay: 0.40s; }
 
     /* ── Hero ── */
     #hero {
@@ -477,31 +479,29 @@
 
   <!-- ── Hero ── -->
   <section id="hero">
-    <!-- Mountain line-art backdrop -->
+    <!-- Mountain line-art backdrop — three angular ridges, no fill, low opacity -->
     <svg class="hero-mountains" viewBox="0 0 1440 500" preserveAspectRatio="none"
          xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation">
-      <!-- Back ridge — gentle sweeping curves, low opacity -->
-      <path d="M0,500 L0,375
-               C160,348 320,378 480,342
-               C640,306 800,360 960,330
-               C1120,300 1300,340 1440,328
-               L1440,500 Z"
-            fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- Front ridge — slightly lower, a touch more visible -->
-      <path d="M0,500 L0,428
-               C180,406 360,432 540,400
-               C720,368 900,415 1080,390
-               C1260,365 1380,394 1440,386
-               L1440,500 Z"
-            fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Far-back ridge — distant, sharp peaks, lowest opacity -->
+      <polyline fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"
+                stroke-linecap="round" stroke-linejoin="round"
+                points="0,500 0,430 80,390 150,320 230,370 310,285 400,340 475,265 560,320 640,255 730,305 810,240 900,295 980,230 1070,278 1150,250 1240,295 1330,268 1440,310 1440,500"/>
+      <!-- Mid ridge — slightly taller and more visible -->
+      <polyline fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.2"
+                stroke-linecap="round" stroke-linejoin="round"
+                points="0,500 0,455 90,435 190,405 290,425 390,392 490,415 590,385 690,408 790,378 890,403 990,375 1090,398 1190,375 1300,398 1440,382 1440,500"/>
+      <!-- Front ridge — closest, most distinct but still very subtle -->
+      <polyline fill="none" stroke="rgba(255,255,255,0.11)" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"
+                points="0,500 0,472 140,458 280,468 420,450 560,463 700,445 840,458 980,442 1120,455 1260,442 1440,452 1440,500"/>
     </svg>
     <div class="container">
       <h1 class="hero-name fade-in">Harrison Kleinschnitz</h1>
       <p class="hero-subtitle fade-in">Entrepreneurship Student | Sales | AI &amp; Business Development</p>
       <p class="hero-bio fade-in">
-        Entrepreneurship student at the University of Oklahoma with experience in sales, business
-        development, and AI strategy. I enjoy building relationships, developing go-to-market
-        strategies, and helping organizations grow in fast-paced environments.
+        I am an Entrepreneurship student at the University of Oklahoma with experience in sales,
+        business development, and AI strategy. I enjoy building relationships, developing
+        go-to-market strategies, and helping organizations grow in fast-paced environments.
       </p>
       <blockquote class="hero-quote fade-in">
         "I work best where strategy meets execution and where strong relationships drive meaningful results."
@@ -759,6 +759,18 @@
   <script>
     // Dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll-triggered fade-in using IntersectionObserver
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
   </script>
 
 </body>
