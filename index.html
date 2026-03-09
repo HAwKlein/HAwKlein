@@ -7,6 +7,8 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: #fff;
@@ -19,16 +21,20 @@
 
     /* ── Navigation ── */
     nav {
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 100;
-      background: #fff;
-      border-bottom: 1px solid #e5e5e5;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid #e8e8e8;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 5%;
-      height: 60px;
+      height: 64px;
     }
 
     .nav-brand {
@@ -38,9 +44,15 @@
       white-space: nowrap;
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 1.75rem;
       list-style: none;
     }
 
@@ -53,22 +65,49 @@
 
     .nav-links a:hover { color: #000; text-decoration: none; }
 
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      background: #2563eb;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.45rem 1.1rem;
+      border-radius: 6px;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover { background: #1d4ed8; text-decoration: none; transform: translateY(-1px); }
+
     /* ── Layout Container ── */
     .container {
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 0 5%;
     }
 
-    /* ── Hero ── */
-    #hero {
-      padding: 100px 5% 80px;
-      max-width: 860px;
-      margin: 0 auto;
+    /* ── Fade-in animation ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
     }
 
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── Hero ── */
+    #hero {
+      padding: 140px 5% 90px;
+    }
+
+    #hero .container { padding: 0; }
+
     .hero-name {
-      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
       font-weight: 800;
       letter-spacing: -0.04em;
       line-height: 1.05;
@@ -76,205 +115,293 @@
     }
 
     .hero-subtitle {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 500;
       color: #555;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.6rem;
     }
 
     .hero-bio {
       font-size: 1rem;
       color: #444;
       max-width: 600px;
-      line-height: 1.7;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
     }
 
-    /* ── Quote ── */
-    #quote {
-      background: #f7f7f7;
-      border-left: 4px solid #111;
-      padding: 40px 5%;
-    }
-
-    #quote .container {
-      max-width: 860px;
-    }
-
-    .quote-text {
-      font-size: 1.2rem;
+    .hero-quote {
+      max-width: 620px;
+      background: #f4f8ff;
+      border-left: 4px solid #2563eb;
+      border-radius: 0 10px 10px 0;
+      padding: 1.25rem 1.5rem;
+      font-size: 1.05rem;
       font-style: italic;
-      color: #222;
-      line-height: 1.6;
+      color: #1e3a6e;
+      line-height: 1.65;
     }
 
     /* ── Section Common ── */
     section {
-      padding: 80px 5%;
+      padding: 90px 5%;
     }
 
-    section:nth-child(even) { background: #fafafa; }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
 
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    .section-subtitle {
+      font-size: 0.875rem;
       color: #888;
       margin-bottom: 2.5rem;
     }
 
-    /* ── Timeline Cards ── */
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .card {
-      border: 1px solid #e5e5e5;
-      border-radius: 10px;
-      padding: 1.5rem 1.75rem;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-      background: #fff;
-      transition: box-shadow 0.2s;
-    }
-
-    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 0.25rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-org {
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .card-location {
-      font-size: 0.8rem;
-      color: #888;
-      white-space: nowrap;
-    }
-
-    .card-role {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #555;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-desc {
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.65;
-    }
-
-    /* ── Project Grid ── */
-    .project-grid {
+    /* ── Timeline Grid ── */
+    .timeline-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 1.25rem;
     }
 
-    .project-card {
-      border: 1px solid #e5e5e5;
-      border-radius: 10px;
+    .tcard {
+      border: 1px solid #e8e8e8;
+      border-radius: 14px;
       padding: 1.5rem;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
       background: #fff;
-      transition: box-shadow 0.2s;
-    }
-
-    .project-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
-
-    .project-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-    }
-
-    .project-desc {
-      font-size: 0.875rem;
-      color: #555;
-      line-height: 1.65;
-    }
-
-    /* ── Activities ── */
-    .activity-list {
-      list-style: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: box-shadow 0.25s, transform 0.25s;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
 
-    .activity-list li {
+    .tcard:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+    }
+
+    .tcard-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+
+    .tcard-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      font-size: 0.95rem;
-      color: #333;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: #f0f4ff;
     }
 
-    .activity-list li::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #111;
+    .tcard-meta { flex: 1; min-width: 0; }
+
+    .tcard-org {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .tcard-date {
+      font-size: 0.75rem;
+      color: #2563eb;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .tcard-location {
+      font-size: 0.75rem;
+      color: #999;
+      margin-top: 1px;
+    }
+
+    .tcard-role {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .tcard-desc {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.65;
+    }
+
+    /* ── Project Cards ── */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .pcard {
+      border: 1px solid #e8e8e8;
+      border-radius: 14px;
+      padding: 1.6rem;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: box-shadow 0.25s, transform 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .pcard:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+    }
+
+    .pcard-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: #f0f4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .pcard-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.3;
+    }
+
+    .pcard-desc {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.65;
+    }
+
+    /* ── Activities Cards ── */
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .acard {
+      border: 1px solid #e8e8e8;
+      border-radius: 14px;
+      padding: 1.4rem 1.25rem;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .acard:hover {
+      box-shadow: 0 6px 18px rgba(0,0,0,0.09);
+      transform: translateY(-2px);
+    }
+
+    .acard-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #f0f4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
       flex-shrink: 0;
     }
 
+    .acard-text strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .acard-text span {
+      font-size: 0.78rem;
+      color: #888;
+    }
+
     /* ── Contact ── */
-    #contact .container {
+    #contact { background: #f8faff; }
+
+    .contact-body {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1.5rem;
+    }
+
+    .contact-intro {
+      font-size: 1rem;
+      color: #444;
+      max-width: 520px;
+      line-height: 1.7;
     }
 
     .contact-links {
       display: flex;
-      gap: 1.25rem;
+      gap: 1rem;
       flex-wrap: wrap;
     }
 
     .contact-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      border: 1px solid #ddd;
+      gap: 0.45rem;
+      border: 1px solid #d0d0d0;
       border-radius: 999px;
-      padding: 0.5rem 1.1rem;
+      padding: 0.55rem 1.2rem;
       font-size: 0.875rem;
       font-weight: 500;
       color: #111;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
     }
 
     .contact-pill:hover {
       background: #f0f0f0;
-      border-color: #bbb;
+      border-color: #aaa;
       text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .contact-pill.primary {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+
+    .contact-pill.primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
     }
 
     /* ── Footer ── */
     footer {
-      border-top: 1px solid #e5e5e5;
+      border-top: 1px solid #e8e8e8;
       padding: 2rem 5%;
       text-align: center;
       font-size: 0.8rem;
-      color: #aaa;
+      color: #bbb;
     }
 
+    /* ── Alternating section bg ── */
+    .bg-white { background: #fff; }
+    .bg-gray  { background: #fafafa; }
+
     /* ── Responsive ── */
-    @media (max-width: 600px) {
-      .nav-links { gap: 1rem; }
-      .card-header { flex-direction: column; }
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .timeline-grid, .project-grid { grid-template-columns: 1fr; }
+      .activity-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -283,129 +410,164 @@
   <!-- ── Navigation ── -->
   <nav>
     <a class="nav-brand" href="#hero">Harrison Kleinschnitz</a>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#academia">Academia</a></li>
-      <li><a href="#onapsis">Onapsis</a></li>
-      <li><a href="#ai">AI</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#timeline">Academia</a></li>
+        <li><a href="#onapsis">Onapsis</a></li>
+        <li><a href="#ai">AI</a></li>
+      </ul>
+      <a class="nav-cta" href="#contact">Contact</a>
+    </div>
   </nav>
 
   <!-- ── Hero ── -->
-  <section id="hero" style="padding-top:100px; padding-bottom:80px;">
-    <div class="container" style="padding:0;">
-      <h1 class="hero-name">Harrison Kleinschnitz</h1>
-      <p class="hero-subtitle">Entrepreneurship Student | Builder | Sales &amp; Business Development</p>
-      <p class="hero-bio">
-        I am an Entrepreneurship student at the University of Oklahoma with experience in sales,
-        business development, and AI strategy. My work focuses on building relationships, developing
-        go-to-market strategies, and helping organizations grow in fast-paced environments.
+  <section id="hero" class="bg-white">
+    <div class="container">
+      <h1 class="hero-name fade-in">Harrison Kleinschnitz</h1>
+      <p class="hero-subtitle fade-in">Entrepreneurship Student | Sales | AI &amp; Business Development</p>
+      <p class="hero-bio fade-in">
+        Entrepreneurship student at the University of Oklahoma with experience in sales, business
+        development, and AI strategy. I enjoy building relationships, developing go-to-market
+        strategies, and helping organizations grow in fast-paced environments.
       </p>
+      <blockquote class="hero-quote fade-in">
+        "I work best where strategy meets execution and where strong relationships drive meaningful results."
+      </blockquote>
     </div>
   </section>
 
-  <!-- ── Quote ── -->
-  <div id="quote">
+  <!-- ── Career Timeline ── -->
+  <section id="timeline" class="bg-gray">
     <div class="container">
-      <p class="quote-text">
-        "I enjoy working where strategy meets execution and where strong relationships drive meaningful results."
-      </p>
-    </div>
-  </div>
+      <h2 class="section-title fade-in">Career Timeline</h2>
+      <p class="section-subtitle fade-in">Education &amp; professional experience</p>
 
-  <!-- ── Career / Education Timeline ── -->
-  <section id="academia" style="background:#fff;">
-    <div class="container">
-      <p class="section-label">Education &amp; Experience</p>
-      <div class="timeline">
+      <div class="timeline-grid">
 
-        <!-- Education -->
-        <div class="card">
-          <div class="card-header">
-            <span class="card-org">University of Oklahoma</span>
-            <span class="card-location">Norman, OK</span>
+        <!-- University of Oklahoma -->
+        <div class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">🎓</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">University of Oklahoma</div>
+              <div class="tcard-date">Expected Dec 2027</div>
+              <div class="tcard-location">Norman, OK</div>
+            </div>
           </div>
-          <div class="card-role">Entrepreneurship and Venture Management (BBA) · Expected December 2027</div>
-          <p class="card-desc">GPA: 3.5</p>
+          <div class="tcard-role">Entrepreneurship &amp; Venture Management (BBA)</div>
+          <div class="tcard-desc">GPA: 3.5</div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <span class="card-org">Anglo-American University</span>
-            <span class="card-location">Prague, Czech Republic</span>
+        <!-- Anglo-American University -->
+        <div class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">✈️</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">Anglo-American University</div>
+              <div class="tcard-date">Spring 2025</div>
+              <div class="tcard-location">Prague, Czech Republic</div>
+            </div>
           </div>
-          <div class="card-role">Study Abroad Program · Spring 2025</div>
+          <div class="tcard-role">Study Abroad Program</div>
         </div>
 
-        <!-- Work Experience -->
-        <div id="onapsis" class="card">
-          <div class="card-header">
-            <span class="card-org">Onapsis</span>
-            <span class="card-location">Boston, MA</span>
+        <!-- Onapsis -->
+        <div id="onapsis" class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">🤖</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">Onapsis</div>
+              <div class="tcard-date">Summer 2025</div>
+              <div class="tcard-location">Boston, MA</div>
+            </div>
           </div>
-          <div class="card-role">AI Business Development Intern · Summer 2025</div>
-          <p class="card-desc">
-            Researched AI platforms to support the company's go-to-market strategy and recommended
-            tools to help enable sales and marketing teams.
-          </p>
+          <div class="tcard-role">AI Business Development Intern</div>
+          <div class="tcard-desc">
+            Researched AI platforms supporting go-to-market strategy and recommended tools to
+            improve sales and marketing operations.
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <span class="card-org">Laundry Lounge</span>
-            <span class="card-location">Colorado Springs, CO</span>
+        <!-- Laundry Lounge -->
+        <div class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">📈</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">Laundry Lounge</div>
+              <div class="tcard-date">Summer 2024</div>
+              <div class="tcard-location">Colorado Springs, CO</div>
+            </div>
           </div>
-          <div class="card-role">Sales Associate Intern · Summer 2024</div>
-          <p class="card-desc">
-            Worked alongside the CEO and Business Development Director to expand into a new region.
-            Helped develop sales messaging and conducted in-person outreach.
-          </p>
+          <div class="tcard-role">Sales Associate Intern</div>
+          <div class="tcard-desc">
+            Worked alongside the CEO and Business Development Director to expand the business into
+            a new region and conduct sales outreach.
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <span class="card-org">Cirque Du Soleil</span>
-            <span class="card-location">Denver, CO</span>
+        <!-- Cirque du Soleil -->
+        <div class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">🎪</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">Cirque du Soleil</div>
+              <div class="tcard-date">Summer 2023</div>
+              <div class="tcard-location">Denver, CO</div>
+            </div>
           </div>
-          <div class="card-role">Sales Associate · Summer 2023</div>
-          <p class="card-desc">
-            Handled customer purchases through POS systems and assisted customers with product
-            recommendations and service.
-          </p>
+          <div class="tcard-role">Sales Associate</div>
+          <div class="tcard-desc">
+            Managed POS transactions and assisted customers with purchases and recommendations.
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <span class="card-org">Colorado Fire and Security</span>
-            <span class="card-location">Denver, CO</span>
+        <!-- Colorado Fire & Security -->
+        <div class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">🔧</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">Colorado Fire &amp; Security</div>
+              <div class="tcard-date">Summer 2022</div>
+              <div class="tcard-location">Denver, CO</div>
+            </div>
           </div>
-          <div class="card-role">Electrician Apprentice · Summer 2022</div>
-          <p class="card-desc">
-            Assisted in installation of fire alarm systems and developed foundational electrical skills.
-          </p>
+          <div class="tcard-role">Electrician Apprentice</div>
+          <div class="tcard-desc">
+            Assisted in fire alarm system installations and developed electrical trade skills.
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <span class="card-org">Shoe Palace</span>
-            <span class="card-location">Lakewood, CO</span>
+        <!-- Shoe Palace -->
+        <div class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">👟</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">Shoe Palace</div>
+              <div class="tcard-date">2021–2022</div>
+              <div class="tcard-location">Lakewood, CO</div>
+            </div>
           </div>
-          <div class="card-role">Sales Associate · 2021–2022</div>
-          <p class="card-desc">
-            Managed transactions and provided customer support while assisting with product recommendations.
-          </p>
+          <div class="tcard-role">Sales Associate</div>
+          <div class="tcard-desc">
+            Managed customer transactions and provided retail sales support.
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <span class="card-org">Evergreen Parks and Recreation</span>
-            <span class="card-location">Evergreen, CO</span>
+        <!-- Evergreen Parks & Recreation -->
+        <div class="tcard fade-in">
+          <div class="tcard-top">
+            <div class="tcard-icon">🏕️</div>
+            <div class="tcard-meta">
+              <div class="tcard-org">Evergreen Parks &amp; Recreation</div>
+              <div class="tcard-date">Summer 2021</div>
+              <div class="tcard-location">Evergreen, CO</div>
+            </div>
           </div>
-          <div class="card-role">Lake Staff · Summer 2021</div>
-          <p class="card-desc">
-            Managed equipment rentals and helped guests with lake activities and safety procedures.
-          </p>
+          <div class="tcard-role">Lake Staff</div>
+          <div class="tcard-desc">
+            Managed equipment rentals and assisted guests with recreational lake activities.
+          </div>
         </div>
 
       </div>
@@ -413,41 +575,45 @@
   </section>
 
   <!-- ── Projects ── -->
-  <section id="projects" style="background:#fafafa;">
+  <section id="projects" class="bg-white">
     <div class="container">
-      <p class="section-label">Projects</p>
+      <h2 class="section-title fade-in">Projects</h2>
+      <p class="section-subtitle fade-in">Selected work and strategic initiatives</p>
+
       <div class="project-grid">
 
-        <div class="project-card">
-          <h3 class="project-title">Dunkin Market Expansion Marketing Plan</h3>
-          <p class="project-desc">
-            A strategic marketing project analyzing market entry, segmentation, pricing strategy,
-            and competitive positioning.
-          </p>
+        <div class="pcard fade-in">
+          <div class="pcard-icon">📊</div>
+          <div class="pcard-title">Dunkin Market Expansion Strategy</div>
+          <div class="pcard-desc">
+            Marketing and market entry strategy including segmentation, pricing, and competitive analysis.
+          </div>
         </div>
 
-        <div class="project-card">
-          <h3 class="project-title">Healthy Meal Startup Concept</h3>
-          <p class="project-desc">
-            Customer discovery interviews and business model development for a customizable healthy
-            meal company targeting busy professionals.
-          </p>
+        <div class="pcard fade-in">
+          <div class="pcard-icon">🥗</div>
+          <div class="pcard-title">Healthy Meal Startup Concept</div>
+          <div class="pcard-desc">
+            Startup concept focused on customizable healthy meals for busy professionals. Conducted
+            customer discovery interviews and developed a business model.
+          </div>
         </div>
 
-        <div class="project-card">
-          <h3 class="project-title">Entrepreneurial Leadership Interviews</h3>
-          <p class="project-desc">
-            Interviewed University of Oklahoma alumni to analyze leadership decision making and
-            entrepreneurial growth.
-          </p>
+        <div class="pcard fade-in">
+          <div class="pcard-icon">🎙️</div>
+          <div class="pcard-title">Entrepreneurial Leadership Interviews</div>
+          <div class="pcard-desc">
+            Interviewed University of Oklahoma alumni to study leadership growth and entrepreneurial
+            decision making.
+          </div>
         </div>
 
-        <div id="ai" class="project-card">
-          <h3 class="project-title">AI Business Strategy Research</h3>
-          <p class="project-desc">
-            Exploring how AI tools can improve business operations, marketing workflows, and sales
-            processes.
-          </p>
+        <div id="ai" class="pcard fade-in">
+          <div class="pcard-icon">🧠</div>
+          <div class="pcard-title">AI Business Strategy Research</div>
+          <div class="pcard-desc">
+            Explored how AI tools can improve marketing, sales workflows, and operational efficiency.
+          </div>
         </div>
 
       </div>
@@ -455,31 +621,60 @@
   </section>
 
   <!-- ── Activities ── -->
-  <section id="activities" style="background:#fff;">
+  <section id="activities" class="bg-gray">
     <div class="container">
-      <p class="section-label">Activities &amp; Honors</p>
-      <ul class="activity-list">
-        <li>Sigma Phi Epsilon — University of Oklahoma</li>
-        <li>President's Honor Roll — University of Oklahoma</li>
-        <li>Volunteer — Sox Place Homeless Youth Shelter (Denver)</li>
-      </ul>
+      <h2 class="section-title fade-in">Activities &amp; Leadership</h2>
+      <p class="section-subtitle fade-in">Organizations, honors, and service</p>
+
+      <div class="activity-grid">
+
+        <div class="acard fade-in">
+          <div class="acard-icon">🏛️</div>
+          <div class="acard-text">
+            <strong>Sigma Phi Epsilon</strong>
+            <span>University of Oklahoma</span>
+          </div>
+        </div>
+
+        <div class="acard fade-in">
+          <div class="acard-icon">🏆</div>
+          <div class="acard-text">
+            <strong>President's Honor Roll</strong>
+            <span>University of Oklahoma</span>
+          </div>
+        </div>
+
+        <div class="acard fade-in">
+          <div class="acard-icon">🤝</div>
+          <div class="acard-text">
+            <strong>Volunteer</strong>
+            <span>Sox Place — Homeless Youth Shelter, Denver</span>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
   <!-- ── Contact ── -->
-  <section id="contact" style="background:#fafafa;">
+  <section id="contact">
     <div class="container">
-      <p class="section-label">Contact</p>
-      <div class="contact-links">
-        <a class="contact-pill" href="mailto:Harrison.A.Kleinschnitz-1@ou.edu">
-          ✉ Harrison.A.Kleinschnitz-1@ou.edu
-        </a>
-        <a class="contact-pill" href="https://www.linkedin.com/in/harrisonkleinschnitz" target="_blank" rel="noopener noreferrer">
-          in LinkedIn
-        </a>
-        <a class="contact-pill" href="https://github.com/HAwKlein" target="_blank" rel="noopener noreferrer">
-          ⌥ GitHub
-        </a>
+      <h2 class="section-title fade-in">Contact</h2>
+      <div class="contact-body">
+        <p class="contact-intro fade-in">
+          Feel free to reach out via email or connect with me on LinkedIn and GitHub.
+        </p>
+        <div class="contact-links fade-in">
+          <a class="contact-pill primary" href="mailto:Harrison.A.Kleinschnitz-1@ou.edu">
+            ✉&nbsp; Harrison.A.Kleinschnitz-1@ou.edu
+          </a>
+          <a class="contact-pill" href="https://www.linkedin.com/in/harrisonkleinschnitz" target="_blank" rel="noopener noreferrer">
+            in&nbsp; LinkedIn
+          </a>
+          <a class="contact-pill" href="https://github.com/HAwKlein" target="_blank" rel="noopener noreferrer">
+            ⌥&nbsp; GitHub
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -487,8 +682,27 @@
   <!-- ── Footer ── -->
   <footer>
     <p>© <span id="year"></span> Harrison Kleinschnitz</p>
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
+
+  <script>
+    // Dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll-triggered fade-in
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+  </script>
 
 </body>
 </html>
