@@ -102,9 +102,25 @@
     /* ── Hero ── */
     #hero {
       padding: 140px 5% 90px;
+      background: #2b2b2b;
+      position: relative;
+      overflow: hidden;
     }
 
-    #hero .container { padding: 0; }
+    /* Mountain SVG line-art backdrop */
+    .hero-mountains {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #hero .container {
+      padding: 0;
+      position: relative; /* sits above the SVG */
+      z-index: 1;
+    }
 
     .hero-name {
       font-size: clamp(2.8rem, 6vw, 4.8rem);
@@ -112,18 +128,19 @@
       letter-spacing: -0.04em;
       line-height: 1.05;
       margin-bottom: 1rem;
+      color: #fff;
     }
 
     .hero-subtitle {
       font-size: 1.1rem;
       font-weight: 500;
-      color: #555;
+      color: rgba(255,255,255,0.75);
       margin-bottom: 1.6rem;
     }
 
     .hero-bio {
       font-size: 1rem;
-      color: #444;
+      color: rgba(255,255,255,0.68);
       max-width: 600px;
       line-height: 1.75;
       margin-bottom: 2.5rem;
@@ -131,13 +148,13 @@
 
     .hero-quote {
       max-width: 620px;
-      background: #f4f8ff;
-      border-left: 4px solid #2563eb;
+      background: rgba(255,255,255,0.07);
+      border-left: 4px solid rgba(255,255,255,0.38);
       border-radius: 0 10px 10px 0;
       padding: 1.25rem 1.5rem;
       font-size: 1.05rem;
       font-style: italic;
-      color: #1e3a6e;
+      color: rgba(255,255,255,0.82);
       line-height: 1.65;
     }
 
@@ -422,7 +439,26 @@
   </nav>
 
   <!-- ── Hero ── -->
-  <section id="hero" class="bg-white">
+  <section id="hero">
+    <!-- Mountain line-art backdrop -->
+    <svg class="hero-mountains" viewBox="0 0 1440 500" preserveAspectRatio="none"
+         xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation">
+      <!-- Back range: tallest, faintest -->
+      <path d="M0,500 L0,318 L80,248 L162,292 L262,194 L362,240 L442,153
+               L542,210 L626,133 L722,200 L802,146 L902,195 L986,126
+               L1082,177 L1166,116 L1266,172 L1366,147 L1440,194 L1440,500 Z"
+            fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" stroke-linejoin="round"/>
+      <!-- Middle range -->
+      <path d="M0,500 L0,358 L102,276 L212,328 L316,236 L426,290 L536,206
+               L650,260 L756,190 L867,250 L976,200 L1086,250 L1196,206
+               L1312,260 L1440,234 L1440,500 Z"
+            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-linejoin="round"/>
+      <!-- Front range: closest, most visible -->
+      <path d="M0,500 L0,398 L126,316 L246,366 L386,283 L510,340 L626,266
+               L746,326 L866,270 L986,336 L1106,280 L1226,340 L1346,296
+               L1440,354 L1440,500 Z"
+            fill="none" stroke="rgba(255,255,255,0.17)" stroke-width="2" stroke-linejoin="round"/>
+    </svg>
     <div class="container">
       <h1 class="hero-name fade-in">Harrison Kleinschnitz</h1>
       <p class="hero-subtitle fade-in">Entrepreneurship Student | Sales | AI &amp; Business Development</p>
