@@ -88,16 +88,40 @@
     }
 
     /* ── Fade-in animation ── */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
     }
 
-    .fade-in.visible {
-      opacity: 1;
-      transform: none;
+    .fade-in {
+      animation: fadeUp 0.55s ease both;
     }
+
+    /* Stagger hero section children (name, subtitle, bio, quote) */
+    #hero .fade-in:nth-child(2) { animation-delay: 0.08s; }
+    #hero .fade-in:nth-child(3) { animation-delay: 0.16s; }
+    #hero .fade-in:nth-child(4) { animation-delay: 0.24s; }
+
+    /* Cards in grids appear sequentially (0.05 s per card) */
+    .timeline-grid .fade-in:nth-child(1),
+    .project-grid  .fade-in:nth-child(1),
+    .activity-grid .fade-in:nth-child(1) { animation-delay: 0.05s; }
+
+    .timeline-grid .fade-in:nth-child(2),
+    .project-grid  .fade-in:nth-child(2),
+    .activity-grid .fade-in:nth-child(2) { animation-delay: 0.10s; }
+
+    .timeline-grid .fade-in:nth-child(3),
+    .project-grid  .fade-in:nth-child(3),
+    .activity-grid .fade-in:nth-child(3) { animation-delay: 0.15s; }
+
+    .timeline-grid .fade-in:nth-child(4),
+    .project-grid  .fade-in:nth-child(4) { animation-delay: 0.20s; }
+
+    .timeline-grid .fade-in:nth-child(5) { animation-delay: 0.25s; }
+    .timeline-grid .fade-in:nth-child(6) { animation-delay: 0.30s; }
+    .timeline-grid .fade-in:nth-child(7) { animation-delay: 0.35s; }
+    .timeline-grid .fade-in:nth-child(8) { animation-delay: 0.40s; }
 
     /* ── Hero ── */
     #hero {
@@ -735,21 +759,6 @@
   <script>
     // Dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Scroll-triggered fade-in
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
   </script>
 
 </body>
