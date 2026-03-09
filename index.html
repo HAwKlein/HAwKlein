@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harrison Kleinschnitz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: #111;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Navigation ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 60px;
+    }
+
+    .nav-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #444;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: #000; text-decoration: none; }
+
+    /* ── Layout Container ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    /* ── Hero ── */
+    #hero {
+      padding: 100px 5% 80px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-bio {
+      font-size: 1rem;
+      color: #444;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    /* ── Quote ── */
+    #quote {
+      background: #f7f7f7;
+      border-left: 4px solid #111;
+      padding: 40px 5%;
+    }
+
+    #quote .container {
+      max-width: 860px;
+    }
+
+    .quote-text {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    /* ── Section Common ── */
+    section {
+      padding: 80px 5%;
+    }
+
+    section:nth-child(even) { background: #fafafa; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── Timeline Cards ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      background: #fff;
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-org {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .card-location {
+      font-size: 0.8rem;
+      color: #888;
+      white-space: nowrap;
+    }
+
+    .card-role {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.65;
+    }
+
+    /* ── Project Grid ── */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      background: #fff;
+      transition: box-shadow 0.2s;
+    }
+
+    .project-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+
+    .project-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-desc {
+      font-size: 0.875rem;
+      color: #555;
+      line-height: 1.65;
+    }
+
+    /* ── Activities ── */
+    .activity-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .activity-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .activity-list li::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #111;
+      flex-shrink: 0;
+    }
+
+    /* ── Contact ── */
+    #contact .container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #111;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .contact-pill:hover {
+      background: #f0f0f0;
+      border-color: #bbb;
+      text-decoration: none;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid #e5e5e5;
+      padding: 2rem 5%;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .nav-links { gap: 1rem; }
+      .card-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <a class="nav-brand" href="#hero">Harrison Kleinschnitz</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#academia">Academia</a></li>
+      <li><a href="#onapsis">Onapsis</a></li>
+      <li><a href="#ai">AI</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section id="hero" style="padding-top:100px; padding-bottom:80px;">
+    <div class="container" style="padding:0;">
+      <h1 class="hero-name">Harrison Kleinschnitz</h1>
+      <p class="hero-subtitle">Entrepreneurship Student | Builder | Sales &amp; Business Development</p>
+      <p class="hero-bio">
+        I am an Entrepreneurship student at the University of Oklahoma with experience in sales,
+        business development, and AI strategy. My work focuses on building relationships, developing
+        go-to-market strategies, and helping organizations grow in fast-paced environments.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Quote ── -->
+  <div id="quote">
+    <div class="container">
+      <p class="quote-text">
+        "I enjoy working where strategy meets execution and where strong relationships drive meaningful results."
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Career / Education Timeline ── -->
+  <section id="academia" style="background:#fff;">
+    <div class="container">
+      <p class="section-label">Education &amp; Experience</p>
+      <div class="timeline">
+
+        <!-- Education -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-org">University of Oklahoma</span>
+            <span class="card-location">Norman, OK</span>
+          </div>
+          <div class="card-role">Entrepreneurship and Venture Management (BBA) · Expected December 2027</div>
+          <p class="card-desc">GPA: 3.5</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-org">Anglo-American University</span>
+            <span class="card-location">Prague, Czech Republic</span>
+          </div>
+          <div class="card-role">Study Abroad Program · Spring 2025</div>
+        </div>
+
+        <!-- Work Experience -->
+        <div id="onapsis" class="card">
+          <div class="card-header">
+            <span class="card-org">Onapsis</span>
+            <span class="card-location">Boston, MA</span>
+          </div>
+          <div class="card-role">AI Business Development Intern · Summer 2025</div>
+          <p class="card-desc">
+            Researched AI platforms to support the company's go-to-market strategy and recommended
+            tools to help enable sales and marketing teams.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-org">Laundry Lounge</span>
+            <span class="card-location">Colorado Springs, CO</span>
+          </div>
+          <div class="card-role">Sales Associate Intern · Summer 2024</div>
+          <p class="card-desc">
+            Worked alongside the CEO and Business Development Director to expand into a new region.
+            Helped develop sales messaging and conducted in-person outreach.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-org">Cirque Du Soleil</span>
+            <span class="card-location">Denver, CO</span>
+          </div>
+          <div class="card-role">Sales Associate · Summer 2023</div>
+          <p class="card-desc">
+            Handled customer purchases through POS systems and assisted customers with product
+            recommendations and service.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-org">Colorado Fire and Security</span>
+            <span class="card-location">Denver, CO</span>
+          </div>
+          <div class="card-role">Electrician Apprentice · Summer 2022</div>
+          <p class="card-desc">
+            Assisted in installation of fire alarm systems and developed foundational electrical skills.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-org">Shoe Palace</span>
+            <span class="card-location">Lakewood, CO</span>
+          </div>
+          <div class="card-role">Sales Associate · 2021–2022</div>
+          <p class="card-desc">
+            Managed transactions and provided customer support while assisting with product recommendations.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-org">Evergreen Parks and Recreation</span>
+            <span class="card-location">Evergreen, CO</span>
+          </div>
+          <div class="card-role">Lake Staff · Summer 2021</div>
+          <p class="card-desc">
+            Managed equipment rentals and helped guests with lake activities and safety procedures.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Projects ── -->
+  <section id="projects" style="background:#fafafa;">
+    <div class="container">
+      <p class="section-label">Projects</p>
+      <div class="project-grid">
+
+        <div class="project-card">
+          <h3 class="project-title">Dunkin Market Expansion Marketing Plan</h3>
+          <p class="project-desc">
+            A strategic marketing project analyzing market entry, segmentation, pricing strategy,
+            and competitive positioning.
+          </p>
+        </div>
+
+        <div class="project-card">
+          <h3 class="project-title">Healthy Meal Startup Concept</h3>
+          <p class="project-desc">
+            Customer discovery interviews and business model development for a customizable healthy
+            meal company targeting busy professionals.
+          </p>
+        </div>
+
+        <div class="project-card">
+          <h3 class="project-title">Entrepreneurial Leadership Interviews</h3>
+          <p class="project-desc">
+            Interviewed University of Oklahoma alumni to analyze leadership decision making and
+            entrepreneurial growth.
+          </p>
+        </div>
+
+        <div id="ai" class="project-card">
+          <h3 class="project-title">AI Business Strategy Research</h3>
+          <p class="project-desc">
+            Exploring how AI tools can improve business operations, marketing workflows, and sales
+            processes.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Activities ── -->
+  <section id="activities" style="background:#fff;">
+    <div class="container">
+      <p class="section-label">Activities &amp; Honors</p>
+      <ul class="activity-list">
+        <li>Sigma Phi Epsilon — University of Oklahoma</li>
+        <li>President's Honor Roll — University of Oklahoma</li>
+        <li>Volunteer — Sox Place Homeless Youth Shelter (Denver)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section id="contact" style="background:#fafafa;">
+    <div class="container">
+      <p class="section-label">Contact</p>
+      <div class="contact-links">
+        <a class="contact-pill" href="mailto:Harrison.A.Kleinschnitz-1@ou.edu">
+          ✉ Harrison.A.Kleinschnitz-1@ou.edu
+        </a>
+        <a class="contact-pill" href="https://www.linkedin.com/in/harrisonkleinschnitz" target="_blank" rel="noopener noreferrer">
+          in LinkedIn
+        </a>
+        <a class="contact-pill" href="https://github.com/HAwKlein" target="_blank" rel="noopener noreferrer">
+          ⌥ GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>© <span id="year"></span> Harrison Kleinschnitz</p>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+</body>
+</html>
